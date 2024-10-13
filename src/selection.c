@@ -6,9 +6,11 @@ Alexandre Achten, October 2024
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
 
 #include "utilities.h"
 #include "selection.h"
+#include "quicksort.h"
 
 int cmp(int a, int b) {
     nbComparisons++;
@@ -21,6 +23,7 @@ int quickselect(int* S, int length, int k){
     /**
     * Perform a quickselect on the array S
     * @param S: the array to be sorted
+    * @param length: the length of the array
     * @param k: the index of the element to be selected
     **/
     if (length < 2) return S[k];
@@ -75,8 +78,59 @@ int quickselect(int* S, int length, int k){
     return x;
 }
 
+int cmpfunc(const void *a, const void *b) {
+    nbComparisons++;
+    return (*(int *)a - *(int *)b);
+}
+
 int lazyselect(int* S, int length, int k){
-    
-    
-    return 0;
+    /**
+    * Perform a lazyselect on the array S
+    * @param S: the array to be selected
+    * @param length: the length of the array
+    * @param k: the index of the element to be selected
+    **/
+    while (1){
+        //Pick n^(3/4) elements uniformly at random with replacement
+        int R_size = (int)pow(length, 0.75);
+        int *R = (int *)malloc(R_size * sizeof(int));
+        srand(time(NULL));
+        for (int i = 0; i < R_size; i++) {
+            R[i] = S[rand() % length];
+        }
+
+        // Sort R with quicksort
+        qsort(R, R_size, sizeof(int), cmpfunc);
+
+        //Compute l and h
+        double x = k * pow(length, -0.25);
+        int l = fmax((int)(x - sqrt(length)), 1);
+        int h = fmin((int)(x + sqrt(length)), R_size);
+        int a = R[l - 1];
+        int b = R[h - 1];
+        free(R);
+
+        // Determine the rank of a and b in S
+        int rs_a = 0, rs_b = 0;
+        int *P = (int *)malloc(length * sizeof(int));
+        int P_size = 0;
+        for (int i = 0; i < length; i++) {
+            if (S[i] < a) rs_a++;
+            if (S[i] <= b) rs_b++;
+            if ((k < pow(length, 0.25) && S[i] >= b) || (k > length - pow(length, 0.25) && S[i] <= a) || 
+                (k >= pow(length, 0.25) && k <= length - pow(length, 0.25) && S[i] >= a && S[i] <= b)) {
+                P[P_size++] = S[i];
+            }
+        }
+        // Check the size of P
+        if (P_size <= 4 * pow(length, 0.75) + 2) {
+            // Sort P and return the kth smallest element
+            qsort(P, P_size, sizeof(int), cmpfunc);
+            int result = P[k - rs_a];
+            free(P);
+            return result;
+        }
+        // Free memory and repeat if the conditions are not met
+        free(P);
+    }
 }

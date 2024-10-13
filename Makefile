@@ -1,5 +1,6 @@
 CC=gcc
 CFLAGS=-O3 -Wall
+LDFLAGS = -lm
 
 OBJECTS= src/utilities.o src/main.o src/quicksort.o src/selection.o
 
@@ -8,7 +9,7 @@ OBJECTS= src/utilities.o src/main.o src/quicksort.o src/selection.o
 all: compile
 	./main
 compile: $(OBJECTS)
-	$(CC) $(CFLAGS) $(OBJECTS) -o main
+	$(CC) $(CFLAGS) $(OBJECTS) $(LDFLAGS) -o main
 
 clean:
 	rm -f src/*.o main

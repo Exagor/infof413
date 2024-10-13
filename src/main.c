@@ -9,13 +9,13 @@ Alexandre Achten, October 2024
 #include "selection.h"
 #include "utilities.h"
 
-int SIZE = 100000;
+int SIZE = 1000000;
 int range_low = 0;
 int range_high = 1000000; // previously 1000000
 
 void benchmarkQuicksort(){
     printf("Benchmarking quicksort...\n");
-    for (int sizes=1000; sizes<=1000000; sizes+=10000){
+    for (int sizes=1000; sizes<=1000000; sizes+=1000){
         SIZE=sizes;
         nbComparisons = 0;
         // generate random list
@@ -36,36 +36,50 @@ void benchmarkQuicksort(){
 
 void benchmarkQuickselect(){
     printf("Benchmarking quickselect...\n");
-    nbComparisons = 0;
-    int* list = generateRandomList(SIZE, range_low, range_high, false);
-    int k = SIZE/2; 
-    clock_t start = clock();
-    int kth = quickselect(list,SIZE, k);
-    clock_t end = clock();
-    printf("The %dth number is : %d\n",k, kth);
+    
+    for (int sizes=1000; sizes<=1000000; sizes+=1000){
+        SIZE=sizes;
+        int k = SIZE/4; 
+        nbComparisons = 0;
+        int* list = generateRandomList(SIZE, range_low, range_high, false);
 
-    double timeTaken = ((double)(end - start)) / CLOCKS_PER_SEC;
-    statsToFile2("quickselect", SIZE, k, timeTaken, nbComparisons);
+        clock_t start = clock();
+        int kth = quickselect(list, SIZE, k);
+        clock_t end = clock();
+        // printf("The %dth number is : %d\n",k, kth);
 
-    printf("\n");
+        double timeTaken = ((double)(end - start)) / CLOCKS_PER_SEC;
+        statsToFile2("quickselect", SIZE, k, timeTaken, nbComparisons);
+        free(list);
+    }
     printf("Benchmarking quickselect done\n");
 }
 
 void benchmarkLazyselect(){
     printf("Benchmarking lazyselect...\n");
-    nbComparisons = 0;
-    int* list = generateRandomList(SIZE, range_low, range_high, false);
-    int kth = lazyselect(list,SIZE, SIZE/2);
-    for (int i = 0; i < SIZE; i++){
-        printf("%d ", list[i]);
+    
+    for (int sizes=1000; sizes<=1000000; sizes+=1000){
+        SIZE=sizes;
+        int k = SIZE/4;
+        nbComparisons = 0;
+        int* list = generateRandomList(SIZE, range_low, range_high, false);
+        
+        clock_t start = clock();
+        int kth = lazyselect(list, SIZE, k);
+        clock_t end = clock();
+        // printf("The %dth number is : %d\n",SIZE/2, kth);
+
+        double timeTaken = ((double)(end - start)) / CLOCKS_PER_SEC;
+        statsToFile2("lazyselect", SIZE, k, timeTaken, nbComparisons);
+        free(list);
     }
     printf("\n");
-    printf("The %dth number is : %d\n",SIZE/2, kth);
     printf("Benchmarking lazyselect done\n");
 }
 
 int main() {
-    // benchmarkQuicksort();
+    benchmarkQuicksort();
     benchmarkQuickselect();
+    benchmarkLazyselect();
     return 0;
 }
