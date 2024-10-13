@@ -1,3 +1,3 @@
 # infof413 assignement
 
-## Quicksort and randomized selection
+## Randomized selection

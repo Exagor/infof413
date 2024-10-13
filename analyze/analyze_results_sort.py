@@ -8,7 +8,7 @@ data = pd.read_csv('results/results.csv')
 # Generate x and y values for x*log(x)
 x_values = np.linspace(min(data['size']), max(data['size']), 500)
 y_values = x_values * np.log(x_values)
-y_values = 3.386 * x_values
+# y_values = 3.386 * x_values
 
 #plot time taken
 plt.plot(data['size'], data['time'], label='Quicksort', linestyle='-', linewidth=1)

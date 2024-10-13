@@ -77,7 +77,7 @@ void statsToFile(char* FileName, int size, double timeTaken, int nbComparisons){
   /*Function that sends stats to a file */
   FILE *file;
 
-  file = fopen("results/results.csv", "a");
+  file = fopen("results/results_sort.csv", "a");
   if (file == NULL) {
     fprintf(stderr, "Error opening file\n");
     return;
@@ -92,6 +92,29 @@ void statsToFile(char* FileName, int size, double timeTaken, int nbComparisons){
 
   //save the file
   fprintf(file, "%s,%d,%lf,%d\n", exactFileName, size, timeTaken, nbComparisons);
+  //printf("Results successfully written to file\n");
+  fclose(file);
+}
+
+void statsToFile2(char* FileName, int size, int k, double timeTaken, int nbComparisons){
+  /*Function that sends stats to a file */
+  FILE *file;
+
+  file = fopen("results/results_select.csv", "a");
+  if (file == NULL) {
+    fprintf(stderr, "Error opening file\n");
+    return;
+  }
+
+  const char* exactFileName = strrchr(FileName, '/');
+  if (exactFileName != NULL) {
+    exactFileName++; // Move past the '/'
+  } else {
+    exactFileName = FileName; // No '/' found, use the whole FileName
+  }
+
+  //save the file
+  fprintf(file, "%s,%d,%d,%lf,%d\n", exactFileName, size, k, timeTaken, nbComparisons);
   //printf("Results successfully written to file\n");
   fclose(file);
 }

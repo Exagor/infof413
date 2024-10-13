@@ -1,7 +1,7 @@
 CC=gcc
 CFLAGS=-O3 -Wall
 
-OBJECTS= src/utilities.o src/main.o src/quicksort.o
+OBJECTS= src/utilities.o src/main.o src/quicksort.o src/selection.o
 
 .PHONY: clean
 
