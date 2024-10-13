@@ -1,5 +1,5 @@
 /*
-Implementation of th randomized quicksort in a recursive way
+Implementation of the randomized quicksort in a recursive way
 */
 
 #include <stdio.h>
@@ -14,6 +14,7 @@ int partition(int* S, int left, int right){
     int i = left - 1;
     for (int j=left; j<right; j++){
         if (S[j]<=pivot){ // if S[j] is less than or equal to pivot
+            nbComparisons++;
             i++;
             int temp = S[i]; //swap S[i] and S[j]
             S[i] = S[j];
@@ -28,7 +29,7 @@ int partition(int* S, int left, int right){
 
 
 int randPartition(int* S, int left, int right){
-    // pick a random number between left and right
+    // pick a random index between left and right
     int randomIndex = generateRandomNumber(left, right);
     int temp = S[randomIndex]; //swap S[randomIndex] and S[right]
     S[randomIndex] = S[right];

@@ -5,6 +5,8 @@
 
 #include "utilities.h"
 
+int nbComparisons = 0;
+
 int* generateRandomList(int size, int lower, int upper, int withReplacement) {
     int* list = (int*)malloc(size * sizeof(int));
     if (list == NULL) {
@@ -56,11 +58,26 @@ int generateRandomNumber(int lower, int upper) {
     return (rand() % (upper - lower + 1)) + lower;
 }
 
-void statsToFile(char* FileName, int improvFlag, int permutFlag, int initFlag, int vndFlag, double timeTaken, int cost, int iterations){
+int verifySorted(int* list, int size) {
+  /**
+  * @param list: the list to be verified
+  * @param size: the size of the list
+  * @return: 1 if the list is sorted, 0 otherwise
+  **/
+
+    for (int i = 0; i < size-1 ; i++) {
+        if (list[i] > list[i + 1]) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+void statsToFile(char* FileName, int size, double timeTaken, int nbComparisons){
   /*Function that sends stats to a file */
   FILE *file;
 
-  file = fopen("raw_results/results.csv", "a");
+  file = fopen("results/results.csv", "a");
   if (file == NULL) {
     fprintf(stderr, "Error opening file\n");
     return;
@@ -73,37 +90,8 @@ void statsToFile(char* FileName, int improvFlag, int permutFlag, int initFlag, i
     exactFileName = FileName; // No '/' found, use the whole FileName
   }
 
-  //Format the file
-  const char *improvStr = (improvFlag == 0) ? "first" : "best";
-  const char *permutStr;
-  switch(permutFlag) {
-    case 0:
-      permutStr = "exchange";
-      break;
-    case 1:
-      permutStr = "transpose";
-      break;
-    case 2:
-      permutStr = "insert";
-      break;
-    default:
-      permutStr = "unknown";
-  }
-  const char *initStr = (initFlag == 0) ? "random" : "CW";
-  switch(vndFlag) {
-    case 0:
-      break;
-    case 1:
-      permutStr = "VND1";
-      break;
-    case 2:
-      permutStr = "VND2";
-      break;
-    default:
-      permutStr = "unknown";
-  }
   //save the file
-  fprintf(file,"%s,%ld,%s,%s,%s,%lf,%d,%i\n",exactFileName, improvStr, permutStr, initStr, timeTaken, cost, iterations);
-  printf("Results successfully written to file\n");
+  fprintf(file, "%s,%d,%lf,%d\n", exactFileName, size, timeTaken, nbComparisons);
+  //printf("Results successfully written to file\n");
   fclose(file);
 }
