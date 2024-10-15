@@ -6,9 +6,10 @@ OBJECTS= src/utilities.o src/main.o src/quicksort.o src/selection.o
 
 .PHONY: clean
 
-all: compile
+all: selection
 	./main
-compile: $(OBJECTS)
+
+selection: $(OBJECTS)
 	$(CC) $(CFLAGS) $(OBJECTS) $(LDFLAGS) -o main
 
 clean:

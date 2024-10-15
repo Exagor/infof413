@@ -60,7 +60,7 @@ void benchmarkLazyselect(){
     
     for (int sizes=1000; sizes<=1000000; sizes+=1000){
         SIZE=sizes;
-        int k = SIZE/4;
+        int k = SIZE/2;
         nbComparisons = 0;
         int* list = generateRandomList(SIZE, range_low, range_high, false);
         
@@ -78,8 +78,8 @@ void benchmarkLazyselect(){
 }
 
 int main() {
-    benchmarkQuicksort();
-    benchmarkQuickselect();
+    // benchmarkQuicksort();
+    // benchmarkQuickselect();
     benchmarkLazyselect();
     return 0;
 }
