@@ -13,7 +13,7 @@ int* generateRandomList(int size, int lower, int upper, int withReplacement) {
         fprintf(stderr, "Memory allocation failed\n");
         return NULL;
     }
-    srand(time(NULL));
+
     if (withReplacement) {
         for (int i = 0; i < size; i++) {
             list[i] = generateRandomNumber(lower, upper);

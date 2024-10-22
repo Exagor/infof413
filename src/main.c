@@ -15,6 +15,7 @@ int range_high = 1000000; // previously 1000000
 
 void benchmarkQuicksort(){
     printf("Benchmarking quicksort...\n");
+
     for (int sizes=1000; sizes<=1000000; sizes+=1000){
         SIZE=sizes;
         nbComparisons = 0;
@@ -36,28 +37,30 @@ void benchmarkQuicksort(){
 
 void benchmarkQuickselect(){
     printf("Benchmarking quickselect...\n");
-    
-    for (int sizes=1000; sizes<=1000000; sizes+=1000){
+
+    for (int sizes=1000; sizes<=1000000; sizes+=50000){
         SIZE=sizes;
-        int k = SIZE/4; 
-        nbComparisons = 0;
-        int* list = generateRandomList(SIZE, range_low, range_high, false);
+        for (int j=0; j<1000; j++){
 
-        clock_t start = clock();
-        int kth = quickselect(list, SIZE, k);
-        clock_t end = clock();
-        // printf("The %dth number is : %d\n",k, kth);
+            int k = SIZE/2;
+            nbComparisons = 0;
+            int* list = generateRandomList(SIZE, range_low, range_high, false);
 
-        double timeTaken = ((double)(end - start)) / CLOCKS_PER_SEC;
-        statsToFile2("quickselect", SIZE, k, timeTaken, nbComparisons);
-        free(list);
+            clock_t start = clock();
+            int kth = quickselect(list, SIZE, k);
+            clock_t end = clock();
+            // printf("The %dth number is : %d\n",k, kth);
+
+            double timeTaken = ((double)(end - start)) / CLOCKS_PER_SEC;
+            statsToFile2("quickselect", SIZE, k, timeTaken, nbComparisons);
+            free(list);
+        }
     }
     printf("Benchmarking quickselect done\n");
 }
 
 void benchmarkLazyselect(){
     printf("Benchmarking lazyselect...\n");
-    
     for (int sizes=1000; sizes<=1000000; sizes+=1000){
         SIZE=sizes;
         int k = SIZE/2;
@@ -78,8 +81,9 @@ void benchmarkLazyselect(){
 }
 
 int main() {
+    srand(time(NULL));
     // benchmarkQuicksort();
-    // benchmarkQuickselect();
-    benchmarkLazyselect();
+    benchmarkQuickselect();
+    // benchmarkLazyselect();
     return 0;
 }

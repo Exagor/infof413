@@ -28,8 +28,6 @@ int quickselect(int* S, int length, int k){
     **/
     if (length < 2) return S[k];
 
-    srand(time(NULL));
-
     // Generate a random pivot index between 0 and len-1
     int pivot_pos = generateRandomNumber(0, length - 1);
     int x = S[pivot_pos];
@@ -94,7 +92,7 @@ int lazyselect(int* S, int length, int k){
         //Pick n^(3/4) elements uniformly at random with replacement
         int R_size = (int)pow(length, 0.75);
         int *R = (int *)malloc(R_size * sizeof(int));
-        srand(time(NULL));
+
         for (int i = 0; i < R_size; i++) {
             R[i] = S[rand() % length];
         }
