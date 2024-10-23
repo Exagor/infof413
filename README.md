@@ -19,4 +19,14 @@ The idea of the algorithm is to identify two elements a and b in S such that bot
 
 We examine how either of these requirements could fail. We focus on the most interesting case when $k \in [n^{\frac{1}{4}},n-n^{\frac{1}{4}}]$, so that $P=\{ y \in S \ | \ a \leq y \leq b\}$. The  analysis for the other two cases of Step 7-16 is similar.\
 If the element $a$ is greater than $S_k$ (or if $b$ is smaller than or equal to $S_k$), we fail because $P$ does not contain $S_k$. For this to happen, fewer than $l$ of the samples in R should be smaller than $S_k$ (respectively, at least $h$ of the random samples should be smaller than $S_k$).\
-The second type of failure occurs when $P$ is too big
+The second type of failure occurs when $P$ is too big.
+
+## How to use
+
+To use the code, you can run the following command in the terminal, in the root directory of the project :
+
+```bash
+make
+```
+
+This will compile the code and run the tests. Make sure to select the right benchmark by modifying the ``main.c`` file.
